@@ -5,6 +5,7 @@ from os.path import expanduser
 import subprocess
 import requests
 
+
 username = os.environ.get('SUKI_USER')
 password = os.environ.get('SUKI_PASSWORD')
 
@@ -44,7 +45,7 @@ def download(anime_id):
 
 
 def notify(anime):
-    args = ['terminal-notifier', '-message', 'New anime from suki.moe',
+    args = ['/usr/local/bin/terminal-notifier', '-message', 'New anime from suki.moe',
             '-open', 'https://suki.moe',
             '-subtitle', 'New update!',
             '-title', anime['name_cn'],

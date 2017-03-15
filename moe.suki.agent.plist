@@ -7,8 +7,9 @@
 
   <key>ProgramArguments</key>
   <array>
-    <string>python</string>
-    <string>$HOME/.suki.moe.py</string>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <string>~/suki_agent/agent.py</string>
   </array>
 
   <key>Nice</key>
