@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>moe.suki.agent</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>python</string>
+    <string>$HOME/.suki.moe.py</string>
+  </array>
+
+  <key>Nice</key>
+  <integer>1</integer>
+
+  <key>StartInterval</key>
+  <integer>3600</integer>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardErrorPath</key>
+  <string>/tmp/suki.moe.err</string>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/suki.moe.out</string>
+</dict>
+</plist>
