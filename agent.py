@@ -5,14 +5,14 @@ from os.path import expanduser
 import logging
 import subprocess
 
-try:
-    import requests
-except ImportError:
-    raise ImportError, '`requests` lib is requied!'
+
+import requests
+
 
 
 username = os.environ.get('SUKI_USER')
 password = os.environ.get('SUKI_PASSWORD')
+apikey = os.environ.get('NOTIFY_APIKEY')
 
 FORMAT = '%(asctime)-15s - %(message)s'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
@@ -20,6 +20,9 @@ logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 assert username and password, \
     'You must provide `SUKI_USER` and `SUKI_PASSWORD` environment variables!'
 
+def message(key, title, body):
+    msg_url = "https://sc.ftqq.com/{}.send?text={}&desp={}".format(key, title, body)
+    requests.get(msg_url)
 
 class SukiAgent(object):
     my_bangumi_api = 'https://suki.moe/api/home/my_bangumi'
@@ -72,25 +75,29 @@ class SukiAgent(object):
         self.logger.info('Get unwatched episodes: %s' % unwatched_episodes)
         return unwatched_episodes
 
-    def notify(self, anime):
-        args = ['/usr/local/bin/terminal-notifier',
-                '-message', 'New anime from suki.moe',
-                '-open', 'https://suki.moe',
-                '-subtitle', 'New update!',
-                '-title', anime['name_cn'],
-                '-actions', 'Download,Dismiss,Set read']
-        output = subprocess.check_output(args)
-        anime_id = anime['id']
-        unwatched_episodes = self.get_unwatched_episodes(anime_id)
+    # def notify(self, anime):
+    #     args = ['/usr/local/bin/terminal-notifier',
+    #             '-message', 'New anime from suki.moe',
+    #             '-open', 'https://suki.moe',
+    #             '-subtitle', 'New update!',
+    #             '-title', anime['name_cn'],
+    #             '-actions', 'Download,Dismiss,Set read']
+    #     output = subprocess.check_output(args)
+    #     anime_id = anime['id']
+    #     unwatched_episodes = self.get_unwatched_episodes(anime_id)
 
-        if output == 'Download':
-            self.logger.info('Downloading %(name)s...'.format(anime))
-            map(self.download_episode, unwatched_episodes)
-        elif output == 'Dismiss':
-            self.logger.info('Dismissed %(name)s...'.format(anime))
-        else:
-            self.logger.info('Setting %(name)s as read.'.format(anime))
-            map(self.set_read, unwatched_episodes)
+    #     if output == 'Download':
+    #         self.logger.info('Downloading %(name)s...'.format(anime))
+    #         map(self.download_episode, unwatched_episodes)
+    #     elif output == 'Dismiss':
+    #         self.logger.info('Dismissed %(name)s...'.format(anime))
+    #     else:
+    #         self.logger.info('Setting %(name)s as read.'.format(anime))
+    #         map(self.set_read, unwatched_episodes)
+
+    def notify(self, anime):
+        print(anime)
+        message(apikey, anime['name_cn']+'更新了', anime['summary'])
 
     def check_and_notify(self):
         self.logger.info('Starting now......')
